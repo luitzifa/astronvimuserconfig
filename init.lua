@@ -49,7 +49,46 @@ return {
     },
     -- enable servers that you already have installed without mason
     servers = {
+      "puppet",
       -- "pyright"
+    },
+    config = {
+      -- example for addings schemas to yamlls
+      -- yamlls = { -- override table for require("lspconfig").yamlls.setup({...})
+      --   settings = {
+      --     yaml = {
+      --       schemas = {
+      --         ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*.{yml,yaml}",
+      --         ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+      --         ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
+      --       },
+      --     },
+      --   },
+      -- },
+      -- Example disabling formatting for a specific language server
+      -- gopls = { -- override table for require("lspconfig").gopls.setup({...})
+      --   on_attach = function(client, bufnr)
+      --     client.resolved_capabilities.document_formatting = false
+      --   end
+      -- }
+      ["puppet"] = {
+        cmd = {
+          "puppet-languageserver",
+          "--stdio",
+          "--local-workspace",
+          "/home/dakr/GIT/solute/infrastructure/puppetcfg",
+        },
+        root_dir = function(fname)
+          local root_files = {
+            "manifests",
+            ".puppet-lint.rc",
+            "hiera.yaml",
+          }
+          return require("lspconfig").util.find_git_ancestor(fname)
+              or require("lspconfig").util.root_pattern(unpack(root_files))(fname)
+              or require("lspconfig").util.path.dirname(fname)
+        end,
+      },
     },
   },
 
