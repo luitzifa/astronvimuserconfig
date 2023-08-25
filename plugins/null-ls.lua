@@ -14,8 +14,8 @@ return {
       null_ls.builtins.diagnostics.puppet_lint,
       null_ls.builtins.formatting.puppet_lint,
       null_ls.builtins.diagnostics.shellcheck,
-      null_ls.builtins.formatting.black,
-      null_ls.builtins.diagnostics.pylint.with({ prefer_local = true }),
+      -- null_ls.builtins.formatting.black,
+      -- null_ls.builtins.diagnostics.pylint.with({ prefer_local = true }),
     }
     return config -- return final config table
   end,
